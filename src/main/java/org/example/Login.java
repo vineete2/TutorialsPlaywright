@@ -5,6 +5,8 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.LoadState;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.nio.file.Paths;
@@ -12,25 +14,37 @@ import java.nio.file.Paths;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class Login {
+    Playwright playwright;
+    Browser browser;
+    Page page;
 
+    @BeforeTest
+    public void setup() {
+        playwright = Playwright.create();
+        browser = playwright.chromium().launch(
+                new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(100)
+        );
+        page = browser.newPage();
+
+    }
 
     @Test
     public void Verify_login() {
-        Playwright playwright = Playwright.create();
-            Browser browser = playwright.chromium().launch(
-                    new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(100)
-            );
-            Page page = browser.newPage();
+
             page.navigate("https://app.vwo.com/#/login");
             System.out.println(page.title());
-            page.locator("#login-username").fill("93npu2yyb@@esiix.com");
-            page.locator("#login-password").fill("Wingify@123");
+            page.locator("#login-username").fill("tiveh19880@mogash.com");
+            page.locator("#login-password").fill("TesterLogin@1457");
             page.click("#js-login-btn");
             page.waitForLoadState(LoadState.NETWORKIDLE);
             assertEquals("Dashboard",page.title());
             page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("Dashboard.png")));
-            page.close();
+
 
     }
 
+    @AfterTest
+    public void teardown() {
+        page.close();
+    }
 }
