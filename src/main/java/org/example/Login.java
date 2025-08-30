@@ -4,6 +4,7 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.options.LoadState;
 import org.testng.annotations.Test;
 
 import java.nio.file.Paths;
@@ -25,8 +26,10 @@ public class Login {
             page.locator("#login-username").fill("93npu2yyb@@esiix.com");
             page.locator("#login-password").fill("Wingify@123");
             page.click("#js-login-btn");
-            page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(page.title())));
+            page.waitForLoadState(LoadState.NETWORKIDLE);
             assertEquals("Dashboard",page.title());
+            page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("Dashboard.png")));
+            page.close();
 
     }
 
