@@ -33,10 +33,13 @@ public class Login {
 
             page.navigate("https://app.vwo.com/#/login");
             System.out.println(page.title());
+
+            //# is used for IDs && (DOT ".") is used for class ids
             page.locator("#login-username").fill("tiveh19880@mogash.com");
             page.locator("#login-password").fill("TesterLogin@1457");
             page.click("#js-login-btn");
-            page.waitForLoadState(LoadState.NETWORKIDLE);
+            page.waitForSelector(".page-heading"); //wait for a class to load
+           // page.waitForLoadState(LoadState.NETWORKIDLE);
             assertEquals("Dashboard",page.title());
             page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("Dashboard.png")));
 
