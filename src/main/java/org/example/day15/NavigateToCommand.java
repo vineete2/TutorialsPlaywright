@@ -1,4 +1,4 @@
-package org.example.day14;
+package org.example.day15;
 
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
@@ -7,14 +7,13 @@ import org.testng.annotations.Test;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
-
 //https://github.com/ebrahimhossaincse/Playwright-Tutorials-Java
-public class FetchCellValueOfRowAndColumn {
-    protected static String url = "https://demo.guru99.com/test/web-table-element.php";
+
+public class NavigateToCommand {
+    protected static String url = "https://demoqa.com/";
 
     Playwright playwright;
     BrowserType browserType;
@@ -36,18 +35,13 @@ public class FetchCellValueOfRowAndColumn {
     @BeforeClass
     public void openUrl() throws InterruptedException {
         page.navigate(url);
-        Thread.sleep(40000);
+        page.waitForLoadState();
     }
 
-    @Test
-    public void fetchCellValueOfParticularRowAndColumn() {
-        ElementHandle tableRow = page.querySelector("//*[@id='leftcontainer']/table/tbody/tr[3]");
-        String rowtext = tableRow.textContent();
-        System.out.print("Third row of table : " + rowtext);
-
-        ElementHandle cellIneed = page.querySelector("//*[@id='leftcontainer']/table/tbody/tr[3]/td[1]/a");
-        String valueIneed = cellIneed.textContent();
-        System.out.println("Cell value is : " + valueIneed);
+    @Test(priority = 0)
+    public void navigateToCommand() throws InterruptedException {
+        page.navigate("https://the-internet.herokuapp.com/challenging_dom");
+        Thread.sleep(3000);
     }
 
     @AfterSuite
