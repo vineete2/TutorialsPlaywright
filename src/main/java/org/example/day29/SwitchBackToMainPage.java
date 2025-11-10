@@ -1,9 +1,6 @@
 package org.example.day29;
 
-//src https://github.com/ebrahimhossaincse/Playwright-Tutorials-Java/tree/main/src/test/java/webtablehandling
 
-
-import java.util.List;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
@@ -15,8 +12,11 @@ import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
-public class iFrameHandling {
-    protected static String url = "https://www.tutorialspoint.com/selenium/practice/frames.php";
+//src https://github.com/ebrahimhossaincse/Playwright-Tutorials-Java/tree/main/src/test/java/webtablehandling
+
+
+public class SwitchBackToMainPage {
+    protected static String url = "https://www.tutorialspoint.com/selenium/practice/nestedframes.php";
 
     Playwright playwright;
     BrowserType browserType;
@@ -41,13 +41,19 @@ public class iFrameHandling {
         page.waitForLoadState();
     }
 
-    //CountTotalNumberOfIFrames
-    @Test
-    public void countIframeNumber() throws InterruptedException {
-        List<ElementHandle> iframeElements = page.querySelectorAll("iframe");
-        System.out.println("The total number of iframes are " + iframeElements.size());
-        Thread.sleep(3000);
 
+    @Test
+    public void backToMain() throws InterruptedException {
+        page.frame("frame1");
+        ElementHandle text = page.querySelector("//*[text()='Selenium - Automation Practice Form']");
+        System.out.println(text.textContent());
+        Thread.sleep(3000);
+        // Switch back to the main window
+        page.mainFrame();
+
+        ElementHandle textInMainPage = page.querySelector("//*[text()='Nested Frames']");
+        System.out.println(textInMainPage.textContent());
+        Thread.sleep(3000);
     }
 
     @AfterSuite
