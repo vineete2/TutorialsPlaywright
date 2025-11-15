@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
+//src https://github.com/ebrahimhossaincse/Playwright-Tutorials-Java/tree/main/src/test/java/alerthandling
 
 public class alertHandling {
     protected static String url = "https://www.tutorialspoint.com/selenium/practice/alerts.php";
