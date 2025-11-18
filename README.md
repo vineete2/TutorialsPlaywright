@@ -1,6 +1,7 @@
 Playwright Tutorials
 
-✅ Day 1 – Setup & First Run: Installed Java 17+, Maven, and Playwright dependency. Created a simple Java class to launch Chromium, open a webpage, and capture a screenshot using the Playwright Java API.
+✅ Day 1 – Setup & First Run: Installed Java 17+, Maven, and Playwright dependency. 
+Created a simple Java class to launch Chromium, open a webpage, and capture a screenshot using the Playwright Java API.
 ✅ Day 2 – Locators & Actions: Used page.locator(), getByText(), and getByRole() to identify elements. Practiced clicks, typing, hover actions, checkboxes, dropdowns, and keyboard events in Java.
 ✅ Day 3 – Waits & Assertions: Understood Playwright’s auto-wait features and implemented explicit waits like locator.waitFor(). Added JUnit assertions such as Assertions.assertTrue() and Assertions.assertEquals().
 ✅ Day 4 – Test Structure & Hooks: Organized tests using JUnit/TestNG with @BeforeAll, @BeforeEach, and @AfterEach annotations. Parameterized tests for multi-browser execution.
