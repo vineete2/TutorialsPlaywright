@@ -55,14 +55,14 @@ public class  formWebelementCommands{
     }
 
 
-    @Test(priority = 2) // Executes 4th
+    @Test //executes 3rd
     public void sendKeysMethod() throws InterruptedException {
         Locator element = page.locator("//input[@id='name']");
         element.fill("James Pond");
         Thread.sleep(3000);
     }
 
-    @Test // Executes 3rd
+    @Test (priority = 2) // Executes 4th
     public void submitMethod() throws InterruptedException {
         page.navigate(url2);
         page.waitForLoadState();
