@@ -1,38 +1,64 @@
-Playwright Java Tutorials
+# 🎭 Playwright Java Tutorials
 
-Welcome to the Playwright Java Automation repository!
-This project contains examples and exercises for using Playwright with Java to automate browser interactions and build test frameworks.
+Welcome to the **Playwright Java Automation** repository!
+This project contains examples and exercises for using **Playwright** with **Java** to automate browser interactions and build test frameworks.
 
-🚀 Overview
+---
+
+## 🚀 Overview
 
 This repository covers a variety of Playwright Java concepts, including:
 
-Setting up Playwright with Java
+* Setting up Playwright with Java
+* Locators, actions, and waits
+* Test structure with JUnit/TestNG
+* Handling alerts, pop-ups, frames, and file uploads
+* Page Object Model (POM) architecture
+* Network mocking and API validation
+* Parallel execution for stability
+* Reporting and CI/CD integration
 
-Locators, actions, and waits
+---
 
-Test structure with JUnit/TestNG
+## 🛠️ Technologies Used
 
-Handling alerts, pop-ups, frames, and file uploads
+* **Java 17+**
+* **Maven**
+* **Playwright Java**
+* **JUnit / TestNG**
+* **GitHub Actions**
+* **Jenkins**
 
-Page Object Model (POM) architecture
+---
 
-Network mocking and API validation
+## 📂 Sample Project Structure
 
-Parallel execution for stability
+```
+📦 playwright-java-tutorials
+ ┣ 📂 src/test/java
+ ┃ ┣ 📂 day1_basics
+ ┃ ┣ 📂 day2_locators
+ ┃ ┣ 📂 day3_waits_assertions
+ ┃ ┣ 📂 day4_test_structure
+ ┃ ┣ 📂 day5_debugging
+ ┃ ┣ 📂 day6_advanced_interactions
+ ┃ ┣ 📂 day7_network_mocking
+ ┃ ┣ 📂 day8_pom
+ ┃ ┣ 📂 day9_parallel
+ ┃ ┗ 📂 day10_ci_cd
+ ┣ 📄 pom.xml
+ ┗ 📄 README.md
+```
 
-Reporting and CI/CD integration
+---
 
-🛠️ Technologies Used
+## 🎉 My Thoughts
 
-Java 17+
+This repository demonstrates how to leverage Playwright in Java for browser automation and testing. 
+It gradually introduces advanced concepts like parallel execution and CI/CD integration.
 
-Maven
+Feel free to ⭐ star the repository if you found it helpful!
 
-Playwright Java
+---
 
-JUnit / TestNG
-
-GitHub Actions
-
-Jenkins
+Let me know if there are any improvements
