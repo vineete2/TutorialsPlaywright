@@ -40,7 +40,7 @@ public class locateBy {
 
     @Test // locate by class
     public void locateByClassName() throws InterruptedException {
-        Locator formControls = page.locator(".form-control");
+        Locator formControls = page.locator(".form-control"); // there are 4 values with this locator on the page
         page.waitForSelector(".form-control");
         int count = formControls.count();
         Thread.sleep(3000);
@@ -51,6 +51,17 @@ public class locateBy {
             Thread.sleep(3000);
         }
     }
+
+
+    @Test // locate by ID
+    public void locateByID() throws InterruptedException {
+        Locator formControls = page.locator("//input[@id='firstname']"); // ID is unique
+        page.waitForSelector("//input[@id='firstname']");
+        Thread.sleep(3000);
+            formControls.fill("John Dork");
+            Thread.sleep(3000);
+    }
+
 
     @AfterSuite
     public void closeChromeBrowser() {
