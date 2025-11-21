@@ -18,7 +18,7 @@ import java.util.List;
 public class LocateByLinkTextAttribute {
 
     String url = "https://www.tutorialspoint.com/selenium/practice/links.php";
-
+    String url2 = "https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php";
     Playwright playwright;
     BrowserType browserType;
     protected Browser browser;
@@ -43,7 +43,7 @@ public class LocateByLinkTextAttribute {
         page.waitForLoadState();
     }
 
-    @Test
+    @Test (priority = 0)
     public void locateByLinkText() throws InterruptedException {
         System.out.println("locateByLinkText " );
         ElementHandle element = page.querySelector("a:has-text(\"Home\")");
@@ -52,15 +52,16 @@ public class LocateByLinkTextAttribute {
     }
 
 
-    @Test
+    @Test (priority = 1)
     public void locateByName() throws InterruptedException {
+        page.navigate(url2);
         System.out.println("locateByName " );
         ElementHandle element = page.querySelector("[name='name']");
         element.fill("John Doe");
         Thread.sleep(3000);
     }
 
-    @Test
+    @Test (priority = 2)
     public void locateByTagName() throws InterruptedException {
         List<ElementHandle> elements = page.querySelectorAll("a");
         System.out.println("locateByTagName " );
