@@ -1,4 +1,4 @@
-package org.example;
+package org.example.playwrightBasics;
 
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
