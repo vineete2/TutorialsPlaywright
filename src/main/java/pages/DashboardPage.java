@@ -11,4 +11,8 @@ public class DashboardPage {
 
     private String allLabels = ".oxd-main-menu-item";
 
+    public void verifyDashboard() {
+
+    }
+
 }
