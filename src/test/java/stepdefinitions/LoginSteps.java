@@ -35,23 +35,43 @@ public class LoginSteps {
         Thread.sleep(5000);
     }
 
+    @When("user logs with valid username {string} and {string}")
+    public void login_page(String username, String password) throws InterruptedException {
+        login = new LoginPage(page);
+        login.loginPage(username, password);
+        System.out.println("Login Page credentials");
+        Thread.sleep(5000);
+
+    }
     @Then("user should see the dashboard")
-    public void verify_dashboard() {
+    public void verify_dashboard() throws InterruptedException {
+        Thread.sleep(5000);
         System.out.println("Dashboard");
         assertTrue(page.locator(".oxd-main-menu-item").first().isVisible());
 
     }
 
 
-    @When("user logs with invalid username {string} and {string}")
-    public void user_logs_with_invalid_username_and(String username, String password) {
+    @When("user logs with invalid username {string} and password {string}")
+    public void user_logs_with_invalid_username_and_Password(String username, String password) throws InterruptedException {
 
         System.out.println("Attempting login with invalid credentials: " + username + "/" + password);
+        login = new LoginPage(page);
+        login.loginPage(username, password);
+        System.out.println("Login Page");
+        Thread.sleep(5000);
+
     }
 
     @Then("user should see an error message {string}")
-    public void user_should_see_an_error_message(String expectedMessage) {
+    public void verify_login_error_message(String expectedMessage) throws InterruptedException {
+        Thread.sleep(5000);
+        //assertTrue(page.locator("//*[text()='Invalid credentials']").isVisible());
 
+        assertTrue(page.getByText("Invalid credentials").isVisible());
         System.out.println("Verifying error message: " + expectedMessage);
     }
+
+
+
 }
