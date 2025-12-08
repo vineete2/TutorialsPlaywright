@@ -28,6 +28,6 @@ public class LoginPage {
     }
 
     public String getLoginErrorMessage() {
-        return page.locator(login_error_message).textContent();
+        return page.locator(login_error_message).textContent().trim();
     }
 }

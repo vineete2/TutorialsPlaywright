@@ -5,7 +5,12 @@ package stepdefinitions;
 
 import com.microsoft.playwright.*;
 import io.cucumber.java.en.*;
+import org.testng.Assert;
 import pages.LoginPage;
+
+import java.io.IO;
+import java.util.List;
+import java.util.Map;
 
 import static org.testng.Assert.assertTrue;
 
@@ -48,6 +53,8 @@ public class LoginSteps {
         Thread.sleep(5000);
         System.out.println("Dashboard");
         assertTrue(page.locator(".oxd-main-menu-item").first().isVisible());
+        context.close();
+        page.close();
 
     }
 
@@ -67,11 +74,47 @@ public class LoginSteps {
     public void verify_login_error_message(String expectedMessage) throws InterruptedException {
         Thread.sleep(5000);
         //assertTrue(page.locator("//*[text()='Invalid credentials']").isVisible());
-
-        assertTrue(page.getByText("Invalid credentials").isVisible());
+        login=new LoginPage(page);
+        String lbl_message = login.getLoginErrorMessage();
+        Assert.assertEquals(lbl_message, expectedMessage);
+      //  assertTrue(page.getByText("Invalid credentials").isVisible());
         System.out.println("Verifying error message: " + expectedMessage);
+        context.close();
+        page.close();
     }
 
+    @When("user logs in with {string} and {string}")
+    public void user_login(String username, String password) throws InterruptedException {
+        login = new LoginPage(page);
+        login.loginPage(username, password);
+        System.out.println("multiple Login ");
+        Thread.sleep(5000);
+    }
+    @Then("user should verify Message {string}")
+    public void verify_message(String message)
+    {
+        if (message.equalsIgnoreCase("Dashboard"))
+        {
+            assertTrue(page.locator(".oxd-main-menu-item").first().isVisible());
+            context.close();
+            page.close();
+        }
+        else {
+            assertTrue(page.locator("//*[text()='Invalid credentials']").isVisible());
+            context.close();
+            page.close();
+        }
 
+    }
 
+    @When("user logs with credentials")
+    public void userLogsWithCredentials(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
+        List<Map<String, String>> credentials = dataTable.asMaps(String.class, String.class);
+        String username = credentials.get(0).get("username");
+        String password = credentials.get(0).get("password");
+        login = new LoginPage(page);
+        login.loginPage(username, password);
+        System.out.println("Login Page smoke");
+        Thread.sleep(5000);
+    }
 }
