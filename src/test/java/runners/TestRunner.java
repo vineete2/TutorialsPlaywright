@@ -10,7 +10,8 @@ import io.cucumber.testng.CucumberOptions;
         glue = "stepdefinitions",
         plugin = {"pretty","html:target/cucumber-reports"},
         monochrome = true
-
+        ,tags =  "@smoke"  //Comment this when running through command line
+        // cmd: mvn test -Dcucumber.filter.tags="@smoke"
 )
 public class TestRunner extends AbstractTestNGCucumberTests{
 
