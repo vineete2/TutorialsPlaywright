@@ -1,0 +1,55 @@
+name: Run Tests and Deploy Report
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Install Maven dependencies
+        run: mvn install -DskipTests
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Generate cucumber HTML report
+        run: mvn exec:java -Dexec.mainClass="reportsGenerator.CucumberReportGenerator"
+
+      - name: Copy report to docs
+        run: |
+          mkdir -p docs
+          cp -r target/cucumber-reports/* docs/
+
+      - name: Commit HTML report to repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add docs/
+          git commit -m "Update Cucumber HTML Report [skip ci]" || echo "No changes to commit"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:master
