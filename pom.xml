@@ -11,8 +11,8 @@
     <name>Playwright Client Examples</name>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -55,12 +55,18 @@
             <version>7.14.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- cucumber reporting (optional) -->
+        <!-- cucumber reporting  -->
         <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
-            <version>5.10.1</version>
+            <version>5.9.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.11.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>
@@ -71,8 +77,8 @@
                 <version>3.10.1</version>
                 <!-- Use project properties for source/target to avoid mismatch -->
                 <configuration>
-                    <source>23</source>
-                    <target>23</target>
+                    <source>21</source>
+                    <target>21</target>
                     <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>

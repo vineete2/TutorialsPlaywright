@@ -8,9 +8,10 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features = "src/test/java/features",
         glue = "stepdefinitions",
-        plugin = {"pretty","html:target/cucumber-reports"},
+        plugin = {"pretty",//"html:target/cucumber-reports"},
+                    "json:target/cucumber.json"},
         monochrome = true
-        ,tags =  "@smoke"  //Comment this when running through command line
+       // ,tags =  "@smoke"  //Comment this when running through command line
         // cmd: mvn test -Dcucumber.filter.tags="@smoke"
 )
 public class TestRunner extends AbstractTestNGCucumberTests{
