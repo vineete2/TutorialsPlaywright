@@ -13,10 +13,14 @@ public class CucumberReportGenerator {
      *This is generating report
      */
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
+        
         File reportOutputDirectory = new File("target/cucumber-reports");
         List<String> jsonFiles = Collections.singletonList("target/cucumber.json");
-
+        if (!jsonFile.exists()) {
+        System.err.println("Required file target/cucumber.json does not exist. Please generate cucumber results before running the report generator.");
+        System.exit(1);
+        }
+        List<String> jsonFiles = Collections.singletonList(jsonFile.getPath());
         Configuration config = new Configuration(reportOutputDirectory, "TutorialsPlaywright");
         ReportBuilder reportBuilder = new ReportBuilder(jsonFiles, config);
         reportBuilder.generateReports();
