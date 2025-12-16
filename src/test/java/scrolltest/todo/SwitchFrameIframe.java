@@ -26,9 +26,9 @@ public class SwitchFrameIframe {
             Frame frame_top = main_Frame.childFrames().get(0);
             Frame frame_bottom = main_Frame.childFrames().get(1);
 
-            Frame frame_left =   frame_top.childFrames().get(0);
-            Frame frame_middle =   frame_top.childFrames().get(1);
-            Frame frame_right =   frame_top.childFrames().get(2);
+            Frame frame_left = frame_top.childFrames().get(0);
+            Frame frame_middle = frame_top.childFrames().get(1);
+            Frame frame_right = frame_top.childFrames().get(2);
 
 
             System.out.println(frame_left.locator("body").innerText());
@@ -36,3 +36,6 @@ public class SwitchFrameIframe {
             System.out.println(frame_right.locator("body").innerText());
             System.out.println(frame_bottom.locator("body").innerText());
 
+        }
+    }
+}
