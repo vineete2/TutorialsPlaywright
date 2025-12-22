@@ -17,6 +17,7 @@ This repository covers a variety of Playwright Java concepts, including:
 * Network mocking and API validation
 * Parallel execution for stability
 * Reporting and CI/CD integration
+* Added Cucumber framework
 
 ---
 
