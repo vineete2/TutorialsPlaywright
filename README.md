@@ -56,8 +56,8 @@ This repository covers a variety of Playwright Java concepts, including:
 ## 🎉 My Thoughts
 
 This repository demonstrates how to leverage Playwright in Java for browser automation and testing. 
-It gradually introduces advanced concepts like parallel execution and CI/CD integration.
-
+It gradually introduce advanced concepts like parallel execution and CI/CD integration.
+Updated Cucumber framework 
 Feel free to ⭐ star the repository if you found it helpful!
 
 ---
