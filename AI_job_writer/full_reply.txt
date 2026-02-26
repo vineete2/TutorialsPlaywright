@@ -1,0 +1,5 @@
+Match Analysis
+
+Current Match Score: 65%
+
+The core automation experience (4+ years) and CI/CD knowledge align well. However, there is a significant language gap: the role requires Python, whereas your profile is Java-heavy. Additionally,
