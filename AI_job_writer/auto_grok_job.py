@@ -188,7 +188,143 @@ def send_to_grok(prompt):
         input("\nPress Enter to close browser...")
         browser.close()
 
-def send_to_gemini(prompt):
+import time
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+
+def send_to_gemini(prompt, output_file="skills.tex"):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False, slow_mo=80)
+        context = browser.new_context(
+            viewport={"width": 1280, "height": 900},
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+        )
+        page = context.new_page()
+
+        print("Opening Gemini + handling consent...")
+
+        # Go directly to gemini.google.com — it usually redirects to consent only on first visit
+        page.goto("https://gemini.google.com/", timeout=45000)
+
+        # Step 1: Handle consent if it appears (timeout 8 seconds)
+        print("Checking for consent screen...")
+        try:
+            reject_btn = page.get_by_role("button", name="Reject all")
+            reject_btn.wait_for(state="visible", timeout=8000)
+            reject_btn.click()
+            print("Clicked 'Reject all'")
+            page.wait_for_load_state("networkidle")
+        except:
+            print("No consent screen detected (already accepted or skipped)")
+
+        # Handle consent if it appears (non-blocking, with timeout)
+        try:
+            reject_btn = page.get_by_role("button", name="Reject all", timeout=10000)
+            reject_btn.wait_for(state="visible", timeout=10000)
+            reject_btn.click(delay=200)
+            print("Clicked 'Reject all'")
+            time.sleep(1.5)
+        except PlaywrightTimeoutError:
+            print("No consent banner appeared (or timed out) → continuing")
+        except Exception as e:
+            print(f"Consent handling failed: {e} → continuing anyway")
+
+        # Wait for the chat input to be ready
+        try:
+            page.get_by_role("textbox", name="Enter a prompt for Gemini").wait_for(timeout=15000)
+        except:
+            print("Main textbox not found by name → will use fallback locator")
+
+        print("Filling prompt...")
+
+        # Reliable ways to fill the prompt (try preferred → fallback)
+        prompt_filled = False
+        try:
+            textbox = page.get_by_role("textbox", name="Enter a prompt for Gemini")
+            textbox.click()
+            textbox.fill(prompt)
+            prompt_filled = True
+        except:
+            pass
+
+        if not prompt_filled:
+            try:
+                # Very common rich-textarea structure in Gemini
+                page.locator("rich-textarea").locator("div").nth(1).fill(prompt)
+                prompt_filled = True
+            except:
+                pass
+
+        if not prompt_filled:
+            # Last resort — any visible contenteditable or div with role=textbox
+            page.locator('[role="textbox"], [contenteditable="true"]').first.fill(prompt)
+            print("Used last-resort locator for prompt")
+
+        print("Prompt filled")
+
+        # Click send
+        try:
+            page.get_by_role("button", name="Send message").click(delay=150)
+            print("Message sent")
+        except:
+            # Fallback: usually the send button is the only button with Send icon or near the textarea
+            page.locator('button:has(svg)').last.click()   # risky but often works
+            print("Used fallback send button locator")
+
+        print("Waiting for Gemini reply...")
+
+        # === Smart polling for the latest response ===
+        reply_text = None
+        start = time.time()
+        while time.time() - start < 60:  # max wait 60s
+            time.sleep(1.8)
+
+            # Preferred: last message container that contains markdown (very reliable in 2025–2026)
+            last_reply = page.locator(
+                'div.markdown, '
+                'div[role="presentation"] div.markdown, '
+                '[data-message-author-role="model"] div.markdown'
+            ).last
+
+            if last_reply.is_visible():
+                reply_text = last_reply.inner_text().strip()
+                if len(reply_text) > 80:  # heuristic: real answer is longer than placeholder
+                    break
+
+            # Fallback 1: any recent model response block with randomized id prefix
+            try:
+                model_responses = page.locator('[id^="model-response-message-contentr_"]')
+                if model_responses.count() > 0:
+                    last_model = model_responses.last
+                    if last_model.is_visible():
+                        reply_text = last_model.inner_text().strip()
+                        if len(reply_text) > 80:
+                            break
+            except:
+                pass
+
+        if reply_text:
+            print("\n=== GEMINI REPLY ===\n")
+            print(reply_text)
+
+            # Your existing extraction logic
+            skills = extract_skills_from_reply(reply_text)  # ← your function
+            if skills:
+                with open(output_file, "w", encoding="utf-8") as f:
+                    f.write(skills)
+                print(f"\n✅ Saved clean LaTeX Skills to: {output_file}")
+            else:
+                with open("full_reply.txt", "w", encoding="utf-8") as f:
+                    f.write(reply_text)
+                print("Skills block not found — full reply saved to full_reply.txt")
+        else:
+            print("Could not reliably capture the reply after 60s.")
+            print("→ Please copy it manually from the browser.")
+            page.pause()  # lets you inspect
+
+        input("\nPress Enter to close browser...")
+        browser.close()
+
+def send_to_gemini_old(prompt):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False, slow_mo=80)
         context = browser.new_context()
