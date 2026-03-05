@@ -1,0 +1,48 @@
+prompts:
+  build_cv_skills: |
+    /no_think
+    You are an ATS-aware CV optimizer.
+
+    Here is my resume:
+    $resume
+
+    Here is a job ad:
+    Title: $title
+    Description: $desc
+
+    Respond with EXACTLY this structure, nothing else:
+
+    1. Match score: X%
+
+    2. Rewritten Skills section (LaTeX):
+    \begin{itemize}
+    \item \textbf{Label:} skill1, skill2, skill3
+    \end{itemize}
+
+    3. New match score: X%
+
+    STRICT RULES for the skills block:
+    - Use ONLY skills from MY RESUME — do NOT copy requirements from the job ad
+    - Do NOT invent experience, skills, or tools not present in my resume
+    - Always write skill category labels in ENGLISH, regardless of the job ad language
+    - Only rephrase, reorder, or emphasize existing skills from my resume
+    - READ the job ad, identify TOP 3 most important skills it asks for
+    - Write skill category labels in Title Case, not ALL CAPS (e.g. "Test Automation" not "TEST AUTOMATION")
+    - Those TOP 3 skills from MY RESUME must appear FIRST and most prominent
+    - RENAME categories to match job language (e.g. if job says 'Test Automation', use that label)
+    - Use job-description keywords ONLY when supported by my resume
+    - DROP irrelevant skills: if job does NOT mention performance/load testing, remove JMeter and Squish entirely
+    - If job mentions Cypress or Playwright, include them and remove JMeter/Squish
+    - QA Fundamentals item must include: functional testing, regression testing, exploratory testing
+    - Programming/Development item must include ALL of: Java, SQL, Maven, Git
+    - Use parentheses for tool descriptions: "Postman (API Testing)" not "Postman for API Testing"
+    - Do NOT list Manual Testing as a standalone skill — merge it into QA Fundamentals
+    - If job mentions product analytics (Amplitude, Mixpanel), add it only if present in resume
+    - Do NOT split tool names that contain slashes e.g. Scrum/Kanban stays as one item
+    - Do NOT use \begin{verbatim}, \documentclass, or any LaTeX preamble
+    - Do NOT add a Languages entry
+    - Do NOT include percentages inside the skills block
+    - Do NOT add commentary, notes, addendums, or suggestions inside the skills block
+    - Do NOT use parentheses for explanations inside skill lines
+    - Output ONLY skill names inside the LaTeX block
+    - 5-7 items maximum, no padding
