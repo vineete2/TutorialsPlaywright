@@ -4,7 +4,8 @@ import time
 from datetime import datetime
 
 # Allow imports from project root
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, PROJECT_ROOT)
 
 from config import OUTPUT_FILE_BASE, OUTPUT_DIR
 from modules.feed import fetch_and_save_jobs, get_all_jobs, filter_jobs, mark_job_generated, patch_csv_add_generated_column

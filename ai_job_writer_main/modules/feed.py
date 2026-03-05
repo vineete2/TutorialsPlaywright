@@ -16,7 +16,7 @@ GERMAN_REQUIRED_PATTERNS = re.compile(
 )
 
 
-def fetch_and_save_jobs():
+def fetch_and_save_jobs(use_tavily=False):
     """Fetch all RSS feeds, deduplicate globally, append new jobs."""
     seen_links = set()
     existing_rows = []
@@ -99,6 +99,21 @@ def fetch_and_save_jobs():
         )
         writer.writeheader()
         writer.writerows(all_rows)
+
+    # # Optionally add Tavily results
+    # if use_tavily:
+    #     try:
+    #         from modules.tavily_feed import fetch_tavily_jobs
+    #         print("Fetching via Tavily search...")
+    #         tavily_jobs = fetch_tavily_jobs()
+    #         for job in tavily_jobs:
+    #             link = job.get("Link", "")
+    #             if link and link not in seen_links:
+    #                 seen_links.add(link)
+    #                 new_rows.append(job)
+    #         print(f"  ✅ Tavily added {len(tavily_jobs)} candidates")
+    #     except Exception as e:
+    #         print(f"  ⚠️ Tavily feed failed: {e}")
 
     print(f"\n✅ Appended {len(new_rows)} new jobs → {LOCAL_CSV} now has {len(all_rows)} total")
 

@@ -8,7 +8,7 @@ from playwright.sync_api import sync_playwright
 import google.generativeai as genai
 
 from config import GEMINI_API_KEY, GEMINI_API_MODEL, OLLAMA_URL, OLLAMA_MODEL, OLLAMA_GPU_LAYERS, CDP_URL, CV_TEX
-from modules import extract_skills_from_reply, save_cv_with_skills
+from modules.cv_writer import extract_skills_from_reply, save_cv_with_skills
 
 genai.configure(api_key=GEMINI_API_KEY)
 

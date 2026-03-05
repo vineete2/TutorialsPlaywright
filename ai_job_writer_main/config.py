@@ -10,9 +10,14 @@ OUTPUT_FILE_BASE = os.path.join(OUTPUT_DIR, "Vineet_CV")
 
 # ── RSS Feeds ────────────────────────────────────────────────────────────────
 RSS_FEEDS = [
+    ("https://rss.app/feeds/Nr1bQwwN4GlEc8y1.csv","LinkedIn Test Automation Engineer"),
     ("https://rss.app/feeds/1cIR1ioKqvbavRwA.csv", "LinkedIn Playwright/Selenium"),
     ("https://rss.app/feeds/70fRpEBI0ubf6WA2.csv", "LinkedIn Selenium"),
     ("https://rss.app/feeds/Jj5cdbaAJPYnM24X.csv", "StepStone QA"),
+    ("https://rss.app/feeds/jsZRQgcZE58V6qSl.csv","Indeed"),
+    ("https://rss.app/feeds/qnTRpZ2HfzoOtELR.csv","linkedin Poland"),
+    ("https://rss.app/feeds/qnTRpZ2HfzoOtELR.csv","linkedin Belgium"),
+
 ]
 
 # ── Gemini API ───────────────────────────────────────────────────────────────
