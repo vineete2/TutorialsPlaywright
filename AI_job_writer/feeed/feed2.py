@@ -647,7 +647,7 @@ def extract_skills_from_reply_old(reply_text):
 
 
 import google.generativeai as genai
-genai.configure(api_key="AIzaSyC3u27HQYLxIkPBU8KKLdY-vPzAWPz8ltA")
+genai.configure(api_key="key")
 def send_to_gemini_api(prompt, output_file="skills.tex"):
     model = genai.GenerativeModel("gemini-2.0-flash")
     #model = genai.GenerativeModel("gemini-2.5-flash")
