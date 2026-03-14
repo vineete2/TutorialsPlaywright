@@ -10,7 +10,7 @@ sys.path.insert(0, PROJECT_ROOT)
 from config import OUTPUT_FILE_BASE, OUTPUT_DIR
 from modules.feed import fetch_and_save_jobs, get_all_jobs, filter_jobs, mark_job_generated, patch_csv_add_generated_column
 from modules.cv_writer import build_prompt
-from modules.llm import send_to_gemini_api, send_to_gemini_cdp, send_to_gemini, send_to_local_llm
+from modules.llm import send_to_gemini_api, send_to_gemini_cdp, send_to_gemini, send_to_local_llm, send_to_grok_cdp
 from modules.utils import extract_company
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -38,6 +38,7 @@ if __name__ == "__main__":
         #    Launch Chrome first: "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="C:\chrome-debug"
         #
         send_to_gemini_cdp(prompt, output_file=out)
+        #send_to_grok_cdp(prompt, output_file=out)
         # send_to_gemini_api(prompt, output_file=out)
         # send_to_local_llm(prompt, output_file=out)
         # send_to_gemini(prompt, output_file=out)

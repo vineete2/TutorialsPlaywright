@@ -8,13 +8,81 @@ from email.utils import parsedate_to_datetime
 
 from config import LOCAL_CSV, RSS_FEEDS
 
-GERMAN_REQUIRED_PATTERNS = re.compile(
+GERMAN_REQUIRED_PATTERNS = None
+GERMAN_REQUIRED_PATTERNS1 = re.compile(
     r'(?:C1|C2|flie[sß]end|verhandlungssicher|muttersprachlich|native|sehr\s+gute[sn]?)'
     r'(?:[^.]*?(?:deutsch|german))|'
     r'(?:deutsch|german)(?:[^.]*?(?:C1|C2|flie[sß]end|verhandlungssicher|muttersprachlich|native|sehr\s+gute[sn]?))',
     re.IGNORECASE
 )
 
+def fetch_rss_xml(url, label, seen_links):
+    """Fetch and parse an RSS XML feed, return list of clean job rows."""
+    import xml.etree.ElementTree as ET
+    new_rows = []
+    try:
+        r = requests.get(url, timeout=20)
+        if r.status_code != 200:
+            print(f"  ⚠️  Failed (HTTP {r.status_code}) — skipping.")
+            return new_rows
+
+        root = ET.fromstring(r.content)
+        # Handle both RSS <item> and Atom <entry> formats
+        items = root.findall(".//item") or root.findall(".//{http://www.w3.org/2005/Atom}entry")
+
+        added = 0
+        for item in items:
+            # RSS tags
+            link  = (item.findtext("link") or "").strip()
+            title = (item.findtext("title") or "").strip()
+            desc  = (item.findtext("description") or item.findtext("summary") or "").strip()
+            date  = (item.findtext("pubDate") or item.findtext("published") or "").strip()
+
+            # Atom tags fallback
+            if not link:
+                link_el = item.find("{http://www.w3.org/2005/Atom}link")
+                if link_el is not None:
+                    link = link_el.get("href", "").strip()
+            if not title:
+                title = (item.findtext("{http://www.w3.org/2005/Atom}title") or "").strip()
+            if not desc:
+                desc = (item.findtext("{http://www.w3.org/2005/Atom}summary") or
+                        item.findtext("{http://www.w3.org/2005/Atom}content") or "").strip()
+            if not date:
+                date = (item.findtext("{http://www.w3.org/2005/Atom}updated") or "").strip()
+
+            if not link or link in seen_links:
+                continue
+            seen_links.add(link)
+
+            # Parse date
+            date_iso = ""
+            if date:
+                try:
+                    date_iso = parsedate_to_datetime(date).isoformat()
+                except Exception:
+                    date_iso = date
+
+            # Strip HTML from description
+            plain_desc = re.sub(r"<[^>]+>", " ", desc)
+            plain_desc = re.sub(r"\s+", " ", plain_desc).strip()
+
+            new_rows.append({
+                "Date":        date_iso,
+                "Title":       title,
+                "Link":        link,
+                "Description": plain_desc,
+                "Source":      label,
+                "Generated":   "",
+            })
+            added += 1
+
+        print(f"  ✅ {label}: +{added} new (seen total: {len(seen_links)})")
+
+    except Exception as e:
+        print(f"  ⚠️ XML parse error for {label}: {e}")
+
+    return new_rows
 
 def fetch_and_save_jobs(use_tavily=False):
     """Fetch all RSS feeds, deduplicate globally, append new jobs."""
@@ -148,9 +216,9 @@ def filter_jobs(jobs):
             except Exception:
                 pass
         desc = job.get("Description", "") + " " + job.get("Title", "")
-        if GERMAN_REQUIRED_PATTERNS.search(desc):
-            print(f"  🇩🇪 Skipping (German C1+ required): {job.get('Title','')[:60]}")
-            continue
+        # if GERMAN_REQUIRED_PATTERNS.search(desc):
+        #     print(f"  🇩🇪 Skipping (German C1+ required): {job.get('Title','')[:60]}")
+        #     continue
         filtered.append(job)
     print(f"→ {len(filtered)} jobs after filters ({len(jobs) - len(filtered)} skipped)")
     return filtered

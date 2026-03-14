@@ -151,8 +151,12 @@ def _fill_and_capture_gemini(page, prompt, output_file):
     print("⏳ Waiting for Gemini response...")
     reply_text = None
     start = time.time()
+    last_text = ""
+    stable_count = 0
+
     while time.time() - start < 90:
         time.sleep(1.8)
+        current_text = ""
         try:
             last_reply = page.locator(
                 'div.markdown, '
@@ -160,27 +164,33 @@ def _fill_and_capture_gemini(page, prompt, output_file):
                 '[data-message-author-role="model"] div.markdown'
             ).last
             if last_reply.is_visible():
-                text = last_reply.inner_text().strip()
-                if len(text) > 80:
-                    reply_text = text
-                    break
+                current_text = last_reply.inner_text().strip()
         except:
             pass
-        try:
-            model_responses = page.locator('[id^="model-response-message-contentr_"]')
-            if model_responses.count() > 0:
-                text = model_responses.last.inner_text().strip()
-                if len(text) > 80:
-                    reply_text = text
+
+        if not current_text:
+            try:
+                model_responses = page.locator('[id^="model-response-message-contentr_"]')
+                if model_responses.count() > 0:
+                    current_text = model_responses.last.inner_text().strip()
+            except:
+                pass
+
+        if len(current_text) > 80:
+            if current_text == last_text:
+                stable_count += 1
+                if stable_count >= 2:  # text unchanged for 2 checks = done
+                    reply_text = current_text
                     break
-        except:
-            pass
+            else:
+                stable_count = 0
+                last_text = current_text
 
     if not reply_text:
         print("❌ Could not capture reply after 90s")
         return
 
-    print("\n=== GEMINI REPLY ===\n", reply_text[:300])
+    print(f"\n=== GEMINI REPLY ({len(reply_text)} chars) ===\n{reply_text[:500]}")
 
     skills = extract_skills_from_reply(reply_text)
     if skills:
@@ -207,7 +217,7 @@ def send_to_gemini(prompt, output_file="skills.tex"):
         browser.close()
         print(f"Total send_to_gemini took {time.time() - start_total:.2f}s")
 
-
+#Chrome DevTools Protocol
 def send_to_gemini_cdp(prompt, output_file="skills.tex"):
     """Connect to already-open Chrome via CDP and use Gemini UI.
 
@@ -248,3 +258,96 @@ def send_to_gemini_cdp(prompt, output_file="skills.tex"):
 
         except Exception as e:
             print(f"❌ CDP Gemini error: {e}")
+
+#Chrome DevTools Protocol
+def send_to_grok_cdp(prompt, output_file="skills.tex"):
+    """Connect to already-open Chrome via CDP and use Grok UI.
+    Make sure x.com/i/grok is already open and logged in.
+    """
+    with sync_playwright() as p:
+        try:
+            browser = p.chromium.connect_over_cdp(CDP_URL)
+            context = browser.contexts[0]
+
+            grok_page = None
+            for page in context.pages:
+                if "x.com/i/grok" in page.url or "grok.com" in page.url:
+                    grok_page = page
+                    break
+            if not grok_page:
+                grok_page = context.new_page()
+                grok_page.goto("https://x.com/i/grok", timeout=30000)
+                time.sleep(3)
+
+            grok_page.bring_to_front()
+            time.sleep(2)
+            grok_page.wait_for_load_state("domcontentloaded")
+
+            # Fill prompt into ProseMirror textbox
+            prompt_filled = False
+            try:
+                textbox = grok_page.locator("div.ProseMirror[contenteditable='true']").first
+                textbox.wait_for(state="visible", timeout=15000)
+                textbox.click()
+                textbox.fill(prompt)
+                prompt_filled = True
+            except:
+                pass
+
+            if not prompt_filled:
+                print("❌ Could not find Grok textbox")
+                return
+
+            print("📨 Prompt filled, sending...")
+
+            # Send with Enter
+            grok_page.keyboard.press("Enter")
+            print("Message sent")
+
+            # Wait for stable reply
+            print("⏳ Waiting for Grok response...")
+            reply_text = ""
+            last_text = ""
+            stable_count = 0
+            start = time.time()
+
+            while time.time() - start < 90:
+                time.sleep(1.8)
+                current_text = ""
+                try:
+                    # Target the response-content-markdown div
+                    last_reply = grok_page.locator("div.response-content-markdown").last
+                    if last_reply.is_visible():
+                        current_text = last_reply.inner_text().strip()
+                except:
+                    pass
+
+                if len(current_text) > 80:
+                    if current_text == last_text:
+                        stable_count += 1
+                        if stable_count >= 2:
+                            reply_text = current_text
+                            break
+                    else:
+                        stable_count = 0
+                        last_text = current_text
+
+            if not reply_text:
+                print("❌ Could not capture Grok reply after 90s")
+                return
+
+            print(f"\n=== GROK REPLY ({len(reply_text)} chars) ===\n{reply_text[:500]}")
+
+            # Reuse same extract + save logic
+            from modules.cv_writer import extract_skills_from_reply, save_cv_with_skills
+            print(f"🔍 Extracting from reply ({len(reply_text)} chars)...")
+            skills = extract_skills_from_reply(reply_text)
+            if skills:
+                save_cv_with_skills(skills, output_file)
+                print(f"✅ Saved: {output_file}")
+            else:
+                print("⚠️ Could not extract skills block — saving raw reply")
+                save_cv_with_skills(reply_text, output_file)
+
+        except Exception as e:
+            print(f"❌ CDP Grok error: {e}")

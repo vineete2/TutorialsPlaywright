@@ -3,7 +3,7 @@ import time
 from datetime import datetime, timezone
 from tavily import TavilyClient
 
-TAVILY_API_KEY = ""
+TAVILY_API_KEY = "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"
 
 SEARCH_QUERIES = [
     "Test Automation Engineer Germany Selenium Playwright job 2026",

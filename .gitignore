@@ -29,9 +29,11 @@ target/cucumber-reports
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+/ai_job_writer_main/output/
 
 ### VS Code ###
 .vscode/
 
 ### Mac OS ###
 .DS_Store
+

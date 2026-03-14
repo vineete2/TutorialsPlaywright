@@ -20,12 +20,13 @@ def load_resume(path=None):
             skills_raw = re.sub(r'\\[a-zA-Z]+\*?\{[^}]*\}', '', skills_raw)
             skills_raw = re.sub(r'\\[a-zA-Z]+', '', skills_raw)
             skills_raw = re.sub(r'[{}]', '', skills_raw)
-            skills_raw = re.sub(r'%.*?\n', '\n', skills_raw)
+            # Remove LaTeX comments (% to end of line)
+            skills_raw = re.sub(r'\s*%[^\n]*', '', skills_raw)
             skills_raw = re.sub(r'\\&', '&', skills_raw)
             skills_raw = re.sub(r'\\_', '_', skills_raw)
             skills_raw = re.sub(r'\\%', '%', skills_raw)
             skills_raw = re.sub(r'\n\s*\n+', '\n', skills_raw).strip()
-            print(f"📋 Loaded skills section:\n{skills_raw}\n")
+            print(f"📋 Loaded skills ({len(skills_raw)} chars):\n{skills_raw}\n--- END ---")
             return skills_raw
         else:
             print("⚠️ Skills section not found in tex file — loading full text")
@@ -48,11 +49,18 @@ PROMPTS = load_prompts()
 
 def build_prompt(job, job_num):
     template = PROMPTS["prompts"]["build_cv_skills"]
+    desc = job.get("Description", "").strip()
+    link = job.get("Link", "").strip()
+    title = job.get("Title", "No title")
+
+    if len(desc.splitlines()) < 3 or len(desc) < 150:
+        desc = f"Visit this URL and read the full job description before rewriting skills: {link}"
+
     return (
         template
         .replace("$resume", f"My current skills:\n{RESUME}")
-        .replace("$title", job.get("Title", "No title"))
-        .replace("$desc", job.get("Description", "No description")[:2000])
+        .replace("$title", title)
+        .replace("$desc", desc)
     )
 
 
@@ -144,7 +152,8 @@ def dedup_skills(content):
 
 def extract_skills_from_reply(reply_text):
     """Extract the skills block from LLM reply. Handles Mistral, Gemini, Ollama formats."""
-
+    print(f"🔍 Extracting from reply ({len(reply_text)} chars)...")
+    print(f"📄 Reply preview:\n{reply_text[:500]}\n")
     # 1. Unwrap \begin{verbatim}
     reply_text = re.sub(
         r'\\begin\{verbatim\}(.*?)\\end\{verbatim\}',
@@ -212,7 +221,7 @@ def extract_skills_from_reply(reply_text):
     content = re.sub(r'(Updated|New|Initial)\s*(Match|Score|Analysis).*', '', content, flags=re.I | re.DOTALL)
     content = re.sub(r'\\small\s*\{([^}]*)\}', r'\1', content)
     content = re.sub(r'\\item\s*\{([^}]*)\}\s*\{', r'\\item \1 {', content)
-    content = remove_languages_from_skills(content)
+    #content = remove_languages_from_skills(content)
     content = clean_skills_block(content)
 
     # Wrap in itemize if needed
