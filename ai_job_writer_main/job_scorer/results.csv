@@ -1,0 +1,27 @@
+score,verdict,title,link,matched_skills
+100,✅ MATCH,Squarehead Technology leter etter Test Automation & CI Engineer i Oslo,Norway Selenium,python(+10); ci/cd(+10); gitlab(+10); docker(+10); test automation(+10); pytest(+10); jest(+5); typescript(+5); linux(+5); git(+5); rest(+5)
+100,✅ MATCH,Trimble Inc. leter etter Software Development Engineer in Test (QA) i BÃ¦rum,Norway Selenium,selenium(+10); python(+10); java(+10); agile(+10); regression(+10); test automation(+10); quality assurance(+10); qa(+10); c#(+5); functional(+5); defect(+5); jira(+5)
+85,✅ MATCH,Neat leter etter Quality Assurance Automation Test Engineer i Oslo,Norway Selenium,python(+10); agile(+10); test automation(+10); quality assurance(+10); qa(+10); linux(+5); git(+5); rest(+5); functional(+5)
+65,✅ MATCH,Hays sÃ¶ker SAP Test Automation Engineer (TOSCA) â€“ long-term consulting assignment i MalmÃ¶,Sweden Selenium,regression(+10); test automation(+10); quality assurance(+10); qa(+10); git(+5); test case(+5)
+55,✅ MATCH,Axis Communications sÃ¶ker System Test Engineer â€“ End-to-End Quality for Access Control i Lund,Sweden Selenium,exploratory(+10); quality assurance(+10); qa(+10); end-to-end(+10); rest(+5)
+50,🟡 BORDERLINE,Zeeks leter etter QA Engineer | Partnership Project (Ð½ÐµÐ°ÐºÑ‚Ð¸Ð²Ð½Ð°) i Time,Norway Selenium,postman(+10); api(+10); qa(+10); jira(+5)
+45,🟡 BORDERLINE,Tieto Rekrytointi Test Automation Specialist - Tieto Tech Consulting (m/f/d),Finland Selenium,api(+10); test automation(+10); jest(+5); git(+5)
+15,❌ SKIP,ENRX Group leter etter TestingeniÃ¸r i Porsgrunn/Skien,Norway Selenium,
+0,❌ DQ,Aize leter etter Senior Software Engineer - 2D i Oslo,Norway Selenium,
+0,❌ DQ,AlphaSense Rekrytointi Head of Engineering Productivity & Experience,Finland Selenium,
+0,❌ DQ,CTS Group leter etter QA E&P Engineer - Project i Narvik,Norway Selenium,
+0,❌ DQ,CTS Group leter etter QA M&P Engineer - Project i Narvik,Norway Selenium,
+0,❌ DQ,Dovre leter etter Sr. Mechanical Engineer â€“ Stavanger i Stavanger,Norway Selenium,
+0,❌ DQ,Erithy leter etter Senior Mechanical Engineer i Stavanger,Norway Selenium,
+0,❌ DQ,GE HealthCare Rekrytointi Intern â€“ Test automation frameworks,Finland Selenium,
+0,❌ DQ,GH Engage leter etter Electrical QA/QC Engineer i HerÃ¸y,Norway Selenium,
+0,❌ DQ,Head Energy AS leter etter Sr. Mechanical Engineer. i Stavanger,Norway Selenium,
+0,❌ DQ,"KONGSBERG leter etter QA Engineer, Manufacturing QA i Kongsberg",Norway Selenium,
+0,❌ DQ,"Kongsberg Defence & Aerospace leter etter QA Engineer, Manufacturing QA i Kongsberg",Norway Selenium,
+0,❌ DQ,Laerdal Medical leter etter HW QA & Test Engineer i Stavanger og omegn,Norway Selenium,
+0,❌ DQ,NACOS Marine sÃ¸ger en Test Engineer (m/f/d) i HÃ¸rsholm Kommune,Sweden Selenium,
+0,❌ DQ,"Plejd sÃ¶ker Embedded Test Engineer- Vikariat i SkÃ¥ne lÃ¤n, Sverige",Sweden Selenium,
+0,❌ DQ,Siemens leter etter Test & Commissioning Engineer i Oslo,Norway Selenium,
+0,❌ DQ,Smartbrain.io leter etter QA engineer (Strong Middle) i Time,Norway Selenium,
+0,❌ DQ,Trener Robotics (formerly T-ROBOTICS) leter etter QA Engineer i Trondheim,Norway Selenium,
+0,❌ DQ,Visual Components Rekrytointi Software QA Engineer,Finland Selenium,
