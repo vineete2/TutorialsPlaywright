@@ -18,7 +18,16 @@ This repository covers a variety of Playwright Java concepts, including:
 * Parallel execution for stability
 * Reporting and CI/CD integration
 * Added Cucumber framework
+* Job Scraper (Playwright CDP) added on 28 April 2026
 
+##  Job Scraper (Playwright CDP)
+
+A Python-based scraper that leverages **Chrome DevTools Protocol (CDP)** to attach to your existing browser session. By "riding" inside your authenticated Chrome instance, it bypasses anti-bot measures and CORS restrictions without needing complex header spoofing.
+
+Located in the `/job_scraper` directory, this utility demonstrates how to use **Playwright Python** to bypass anti-bot measures by attaching to a real, authenticated Chrome session via **Chrome DevTools Protocol (CDP)**.
+
+ 🌟 Key Concept: CDP Attachment
+Instead of launching a "clean" headless browser (which job boards often block), this scraper "rides" inside your already-open Chrome window using `connect_over_cdp`.
 ---
 
 ## 🛠️ Technologies Used
@@ -59,6 +68,8 @@ This repository demonstrates how to leverage Playwright in Java for browser auto
 It gradually introduce advanced concepts like parallel execution and CI/CD integration.
 Updated Cucumber framework 
 Feel free to ⭐ star the repository if you found it helpful!
+---
+
 
 ---
 
